@@ -1,0 +1,121 @@
+/* style.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #00ff5f;
+  }
+  
+  .full-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .bot-header, .widget-header {
+    background-color: #111;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #00ff5f;
+  }
+  
+  .bot-logo {
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+  
+  .bot-logo.small {
+    height: 30px;
+  }
+  
+  .widget-title {
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  
+  .chat-container {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #111;
+  }
+  
+  .chat-container.widget-mode {
+    max-height: 300px;
+    width: 350px;
+    border: 1px solid #00ff5f;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00ff5f44;
+  }
+
+  /* Center and constrain the widget */
+.bot-widget {
+    max-width: 400px;
+    margin: 40px auto;
+    border: 1px solid #00ff5f;
+    border-radius: 12px;
+    box-shadow: 0 0 12px #00ff5f55;
+    background-color: #000;
+  }
+  
+  
+  .bot-message, .user-message {
+    margin: 5px 0;
+    padding: 8px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+  }
+  
+  .input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #111;
+    border-top: 1px solid #00ff5f;
+  }
+  
+  .input-container input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #00ff5f;
+    border-radius: 4px;
+    background-color: #222;
+    color: #00ff5f;
+  }
+  
+  .input-container button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #00ff5f;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .quick-replies {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .quick-replies button {
+    background-color: #222;
+    color: #00ff5f;
+    border: 1px solid #00ff5f;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  
+  .footer-note {
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 6px;
+    color: #888;
+    background-color: #000;
+  }
+  
