@@ -15,14 +15,46 @@
   </div>
   <div id="chat-container" class="chat-container">
     <div class="bot-message">Hi there! I'm the Advanced AI Bot. Want to see what I can build for your business?</div>
+    
     <div class="quick-replies">
-      <button onclick="handleQuickReply('real estate')">Real Estate Bot Demo</button>
-      <button onclick="handleQuickReply('hotel concierge')">Hotel Concierge Bot Demo</button>
-      <button onclick="handleQuickReply('sop assistant')">SOP Assistant Demo</button>
-      <button onclick="handleQuickReply('pricing')">Pricing Info</button>
-      <button onclick="handleQuickReply('book call')">Book a Free Call</button>
+      <button class="neon-button" onclick="handleQuickReply('real estate')">Real Estate Bot Demo</button>
+      <button class="neon-button" onclick="handleQuickReply('hotel concierge')">Hotel Concierge Bot Demo</button>
+      <button class="neon-button" onclick="handleQuickReply('sop assistant')">SOP Assistant Demo</button>
+      <button class="neon-button" onclick="handleQuickReply('pricing')">Pricing Info</button>
+      <button class="neon-button pulse" onclick="handleQuickReply('book call')">Book a Free Call</button>
     </div>
+    
+    
   </div>
+
+  <div class="language-controls">
+
+    <select id="language-select">
+
+      <option value="en">🇺🇸 English</option>
+
+      <option value="es">🇪🇸 Spanish</option>
+
+      <option value="fr">🇫🇷 French</option>
+
+      <option value="de">🇩🇪 German</option>
+      
+      <option value="zh">🇨🇳 Chinese</option>
+
+      <!-- Add more as needed -->
+
+    </select>
+
+    <button onclick="toggleTranslateMode()">🌐 Toggle Translate</button>
+
+  </div>
+  
+  <div class="voice-controls">
+    <button onclick="startListening()">🎤 Speak</button>
+    <button onclick="readBotMessage()">🔊 Read</button>
+  </div>
+  
+
   <div class="input-container">
     <input type="text" id="user-input" placeholder="Type your message..." />
     <button id="send-btn">Send</button>

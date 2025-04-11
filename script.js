@@ -1,17 +1,52 @@
 // script.js
-document.getElementById("send-btn").addEventListener("click", sendMessage);
-document.getElementById("user-input").addEventListener("keypress", function (e) {
+let translateMode = 'off';
+let targetLang = 'en';
+
+const inputEl = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+const langSelect = document.getElementById("language-select");
+
+sendBtn.addEventListener("click", sendMessage);
+inputEl.addEventListener("keypress", function (e) {
   if (e.key === "Enter") sendMessage();
 });
 
-function sendMessage() {
-  const input = document.getElementById("user-input");
-  const message = input.value.trim();
-  if (!message) return;
+if (langSelect) {
+  langSelect.addEventListener("change", () => {
+    targetLang = langSelect.value;
+  });
+}
 
-  addMessage(message, "user-message");
-  input.value = "";
-  botReply(message);
+function toggleTranslateMode() {
+  if (translateMode === 'off') {
+    translateMode = 'auto';
+    alert("Auto Translate enabled. Messages will be translated to " + targetLang.toUpperCase());
+  } else if (translateMode === 'auto') {
+    translateMode = 'live';
+    alert("Live Translate mode enabled. Original and translated text will both be shown.");
+  } else {
+    translateMode = 'off';
+    alert("Translation disabled.");
+  }
+}
+
+function sendMessage() {
+  const message = inputEl.value.trim();
+  if (!message) return;
+  addMessage("You: " + message, "user-message");
+  inputEl.value = "";
+
+  if (translateMode === 'auto') {
+    translateText(message, targetLang).then(translated => {
+      callBotAPI(translated);
+    });
+  } else if (translateMode === 'live') {
+    translateText(message, targetLang).then(translated => {
+      addMessage(`Guest: ${message}\nStaff (${targetLang.toUpperCase()}): ${translated}`, "bot-message");
+    });
+  } else {
+    callBotAPI(message);
+  }
 }
 
 function addMessage(text, className) {
@@ -23,23 +58,49 @@ function addMessage(text, className) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-async function botReply(input) {
-    try {
-      const response = await fetch("https://advanced-ai-backend.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input })
-      });
-      const data = await response.json();
-      addMessage(data.reply, "bot-message");
-    } catch (error) {
+function callBotAPI(input) {
+  fetch("https://advanced-ai-backend.onrender.com/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: input })
+  })
+    .then(res => res.json())
+    .then(data => addMessage("Bot: " + data.reply, "bot-message"))
+    .catch(err => {
+      console.error(err);
       addMessage("Oops! The bot is currently unavailable.", "bot-message");
-      console.error(error);
-    }
-  }
-  
+    });
+}
 
-function handleQuickReply(topic) {
-  document.getElementById("user-input").value = topic;
-  sendMessage();
+async function translateText(text, target) {
+  const res = await fetch('https://libretranslate.de/translate', {
+    method: 'POST',
+    body: JSON.stringify({
+      q: text,
+      source: 'auto',
+      target: target,
+      format: 'text'
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  });
+  const data = await res.json();
+  return data.translatedText;
+}
+
+function startListening() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = targetLang || 'en-US';
+  recognition.start();
+  recognition.onresult = function(event) {
+    inputEl.value = event.results[0][0].transcript;
+  };
+}
+
+function readBotMessage() {
+  const msg = new SpeechSynthesisUtterance();
+  const lastBot = document.querySelectorAll(".bot-message");
+  if (lastBot.length > 0) {
+    msg.text = lastBot[lastBot.length - 1].innerText;
+    window.speechSynthesis.speak(msg);
+  }
 }
